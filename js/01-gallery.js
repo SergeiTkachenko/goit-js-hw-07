@@ -7,7 +7,9 @@ const markup = galleryItems
   .map(
     galleryItems =>
       `<div class="gallery__item">
-        <a class="gallery__link" href="large-image.jpg">
+        <a 
+        class="gallery__link" 
+        href=${galleryItems.original}>
           <img
             class="gallery__image"
             src=${galleryItems.preview}
