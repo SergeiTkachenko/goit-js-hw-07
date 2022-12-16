@@ -25,21 +25,51 @@ list.innerHTML = markup;
 
 list.addEventListener('click', onTagsClick);
 
+// ---------------------- мой первый варинт
+// function onTagsClick(e) {
+//   e.preventDefault();
+//   if (e.target.className !== 'gallery__image') {
+//     return;
+//   }
+
+//   const instance = basicLightbox.create(`
+//   <li><img class="modal-img" src=${e.target.dataset.source}></li>
+// `);
+
+//   instance.show();
+
+//   list.addEventListener('keydown', e => {
+//     if (e.code === 'Escape') {
+//       instance.close();
+//     }
+//   });
+// }
+// ---------------------- мой первый варинт конец
+
+// ----------------------варинт от ментора
+
+const instance = basicLightbox.create(`<img class="modal-img" src=''>`, {
+  onShow: instance => {
+    window.addEventListener('keydown', onEscClick);
+  },
+  onClose: instance => {
+    window.removeEventListener('keydown', onEscClick);
+  },
+});
+
 function onTagsClick(e) {
   e.preventDefault();
-  if (e.target.className !== 'gallery__image') {
+  if (e.target.nodeName !== 'IMG') {
     return;
   }
-
-  const instance = basicLightbox.create(`
-  <li><img class="gallery__item" src=${e.target.dataset.source}></li>
-`);
+  instance.element().querySelector('img').src = e.target.dataset.source;
 
   instance.show();
+}
 
-  list.addEventListener('keydown', e => {
-    if (e.code === 'Escape') {
-      instance.close();
-    }
-  });
+function onEscClick(e) {
+  if (e.key === 'Escape') {
+    instance.close();
+    return;
+  }
 }
